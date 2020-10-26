@@ -81,11 +81,14 @@ removeErrors = function() {
     passwordError.hide();
     emailError.hide();
     nameError.hide();
+    email.removeClass('invalid');
+    name.removeClass('invalid');
+    password.removeClass('invalid');
 }
 
 form.submit(function (e) {
     if(!passwordIsFill || !nameIsFill || !emailIsFill) {
-        alert("NOOOOON !")
+        alert("Invalid form !")
         removeErrors();
         e.preventDefault()
         if(!passwordIsFill)
@@ -94,5 +97,11 @@ form.submit(function (e) {
             nameError.show()
         if(!emailIsFill)
             emailError.show()
+    } else if(email.attr('type') !== "email"){
+        alert("Type error on email input !")
+        email.attr('type', "email")
+        e.preventDefault()
+    } else {
+        alert("It's all good !")
     }
 })

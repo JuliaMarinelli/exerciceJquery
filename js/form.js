@@ -90,7 +90,6 @@ form.submit(function (e) {
     if(!passwordIsFill || !nameIsFill || !emailIsFill) {
         alert("Invalid form !")
         removeErrors();
-        e.preventDefault()
         if(!passwordIsFill)
             passwordError.show()
         if(!nameIsFill)
@@ -100,8 +99,30 @@ form.submit(function (e) {
     } else if(email.attr('type') !== "email"){
         alert("Type error on email input !")
         email.attr('type', "email")
-        e.preventDefault()
     } else {
         alert("It's all good !")
+        Object.keys(inputs)
+        .filter(function(key) {
+            return Number.isInteger(parseInt(key))
+        })
+        .forEach(key => {
+            const input = $(inputs[key]);
+            if (input.attr('type') !== "submit"){
+                $.ajax({
+                    url: './form.json',
+                    method: 'PUT',
+                    dataType: 'json',
+                    data: {datas:input.val()},
+                    success: function(){
+                        alert('Requested !')
+                    },
+                    error: function(jqXHR, statusText, error){
+                        console.log('error: ', error);
+                    }
+                })
+            }
+        })
     }
+    
+    e.preventDefault()
 })
